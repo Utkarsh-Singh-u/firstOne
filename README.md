@@ -132,66 +132,58 @@ flowchart LR
 
 ---
 
-# ER Diagram - Course, Faculty, Student
+# ER Diagram - Clean Layout (Course System)
 
 ```mermaid
-flowchart LR
+flowchart TB
 
-    COURSE[COURSE]
-    FACULTY[FACULTY]
-    STUDENT[STUDENT]
+    %% Entities
+    FACULTY[Faculty]
+    COURSE[Course]
+    STUDENT[Student]
 
+    %% Relationships
     TEACHES{teaches}
     ENROLLS{enrolled in}
 
+    %% Connections (no crossing)
     FACULTY ---|1| TEACHES
     TEACHES ---|N| COURSE
 
     STUDENT ---|N| ENROLLS
     ENROLLS ---|N| COURSE
 
-    %% COURSE attributes
-    COURSE --- c_id((c_id))
-    COURSE --- name((name))
-    COURSE --- sem((sem))
-    COURSE --- year((year))
-    COURSE --- FacultyId((FacultyId))
-
-    %% FACULTY attributes
-    FACULTY --- fid((fid))
-    FACULTY --- name((name))
+    %% Faculty attributes
+    FACULTY --- f_id((f_id))
+    FACULTY --- f_name((name))
     FACULTY --- salary((salary))
     FACULTY --- dept((dept))
-    FACULTY --- dependent((dependent))
 
-    %% STUDENT attributes
-    STUDENT --- sid((s_id))
-    STUDENT --- sname((s_name))
-    STUDENT --- dept((dept))
-    STUDENT --- sem((sem))
-    STUDENT --- year((year))
-    STUDENT --- gradepoint((gradepoint))
+    %% Course attributes
+    COURSE --- c_id((c_id))
+    COURSE --- c_name((name))
+    COURSE --- sem((sem))
+    COURSE --- year((year))
+
+    %% Student attributes
+    STUDENT --- s_id((s_id))
+    STUDENT --- s_name((name))
     STUDENT --- grade((grade))
+    STUDENT --- gradepoint((gradepoint))
 ```
+## 3️⃣ Employee – Company
 
----
+```mermaid
+flowchart LR
 
-## 📌 Cardinality Explanation
+    EMP[EMPLOYEE]
 
-* **FACULTY (1) — teaches — (N) COURSE**
-  → One faculty can teach multiple courses
+    EMP --- id((e_id))
+    EMP --- name((e_name))
+    EMP --- phno((phno))
+    EMP --- salary((salary))
 
-* **STUDENT (N) — enrolled in — (N) COURSE**
-  → Many students can enroll in many courses (**M:N relationship**)
-
----
-
-## ✅ Notes
-
-* Diamonds = relationships
-* Ovals = attributes
-* Lines = proper ER connections
-* This matches your handwritten diagram closely
+```
 
 ---
 
