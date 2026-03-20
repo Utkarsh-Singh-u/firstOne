@@ -44,9 +44,11 @@ flowchart LR
 
     STUDENT --- id((id))
     STUDENT --- name((name))
-    STUDENT --- address((address))
-    STUDENT --- contact((contact))
-    STUDENT --- email((email))
+    STUDENT --- sems((sems))
+    STUDENT --- enrolled_year((enrolled_year))
+    STUDENT --- credit((credit))
+    STUDENT --- dept_no((dept_no))
+    STUDENT --- facul_id((facul_id))
 
     FACULTY --- f_id((f_id))
     FACULTY --- f_name((f_name))
@@ -77,8 +79,8 @@ flowchart LR
 
     CAR --- car_id((car_id))
     CAR --- brand((brand))
-    CAR --- type((type))
-    CAR --- price((price))
+    CAR --- cost((type))
+    CAR --- ins_amount((price))
 ```
 
 ---
@@ -129,5 +131,69 @@ flowchart LR
 * Lines = Proper ER connections (no arrows)
 
 ---
+
+# ER Diagram - Course, Faculty, Student
+
+```mermaid
+flowchart LR
+
+    COURSE[COURSE]
+    FACULTY[FACULTY]
+    STUDENT[STUDENT]
+
+    TEACHES{teaches}
+    ENROLLS{enrolled in}
+
+    FACULTY ---|1| TEACHES
+    TEACHES ---|N| COURSE
+
+    STUDENT ---|N| ENROLLS
+    ENROLLS ---|N| COURSE
+
+    %% COURSE attributes
+    COURSE --- c_id((c_id))
+    COURSE --- name((name))
+    COURSE --- sem((sem))
+    COURSE --- year((year))
+    COURSE --- FacultyId((FacultyId))
+
+    %% FACULTY attributes
+    FACULTY --- fid((fid))
+    FACULTY --- name((name))
+    FACULTY --- salary((salary))
+    FACULTY --- dept((dept))
+    FACULTY --- dependent((dependent))
+
+    %% STUDENT attributes
+    STUDENT --- sid((s_id))
+    STUDENT --- sname((s_name))
+    STUDENT --- dept((dept))
+    STUDENT --- sem((sem))
+    STUDENT --- year((year))
+    STUDENT --- gradepoint((gradepoint))
+    STUDENT --- grade((grade))
+```
+
+---
+
+## 📌 Cardinality Explanation
+
+* **FACULTY (1) — teaches — (N) COURSE**
+  → One faculty can teach multiple courses
+
+* **STUDENT (N) — enrolled in — (N) COURSE**
+  → Many students can enroll in many courses (**M:N relationship**)
+
+---
+
+## ✅ Notes
+
+* Diamonds = relationships
+* Ovals = attributes
+* Lines = proper ER connections
+* This matches your handwritten diagram closely
+
+---
+
 
 
