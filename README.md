@@ -184,9 +184,8 @@ flowchart LR
     EMP --- salary((salary))
 
 ```
-
+```mermaid
 ---
-
 flowchart TB
 
     %% Entities
@@ -221,3 +220,5 @@ flowchart TB
 
     BRANCH --- b_id((BID))
     BRANCH --- b_name((FNAME))
+
+```
