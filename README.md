@@ -222,3 +222,44 @@ flowchart TB
     BRANCH --- b_name((FNAME))
 
 ```
+
+```mermaid
+flowchart LR
+
+    %% External Entities
+    Customer((Customer))
+    Driver((Driver))
+    Admin((Admin))
+
+    %% System
+    System[Cab Management System]
+
+    %% Data Stores
+    DB1[(Customer DB)]
+    DB2[(Driver DB)]
+    DB3[(Ride DB)]
+    DB4[(Payment DB)]
+    DB5[(Feedback DB)]
+
+    %% Customer interactions
+    Customer -->|Register / Login| System
+    Customer -->|Request Ride| System
+    System -->|Ride Confirmation| Customer
+    Customer -->|Payment| System
+    Customer -->|Feedback| System
+
+    %% Driver interactions
+    Driver -->|Register| System
+    Driver -->|Accept/Reject Ride| System
+    System -->|Ride Details| Driver
+
+    %% Admin interactions
+    Admin -->|Manage System| System
+    System -->|Reports| Admin
+
+    %% Data storage flows
+    System --> DB1
+    System --> DB2
+    System --> DB3
+    System --> DB4
+    System --> DB5
