@@ -1,265 +1,64 @@
-# ER Diagram (Proper ER Notation)
+````md
+# Hostel Mess Database - ER Diagram (Chen Notation)
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-    EMP[EMP]
-    COMP[COMP]
-
-    WORKS_IN{works in}
-
-    EMP --- WORKS_IN
-    WORKS_IN --- COMP
-
-    EMP --- e_id((e_id))
-    EMP --- e_name((e_name))
-    EMP --- salary((salary))
-    EMP --- e_city((e_city))
-
-    COMP --- c_id((c_id))
-    COMP --- c_name((c_name))
-```
-
-# ER Diagrams (With Proper Notation & Cardinality)
-
----
-
-## 1️⃣ Student – Faculty – Department
-
-```mermaid
-flowchart LR
-
+    %% Entities (Rectangles)
+    HOSTEL[HOSTEL]
+    MENU[MENU]
+    WARDEN[WARDEN]
     STUDENT[STUDENT]
-    FACULTY[FACULTY]
-    DEPT[DEPARTMENT]
 
-    ADVISED_BY{advised by}
-    BELONGS_TO{belongs to}
+    %% Attributes (Ovals)
+    HNO((HNO))
+    HNAME((HNAME))
+    TYPE((TYPE))
 
-    STUDENT ---|N| ADVISED_BY
-    ADVISED_BY ---|1| FACULTY
+    SID((SID))
+    SNAME((SNAME))
+    GEN((GEN))
+    YEAR((YEAR))
 
-    STUDENT ---|N| BELONGS_TO
-    BELONGS_TO ---|1| DEPT
+    WNAME((WNAME))
+    QUAL((QUAL))
 
-    STUDENT --- id((id))
-    STUDENT --- name((name))
-    STUDENT --- sems((sems))
-    STUDENT --- enrolled_year((enrolled_year))
-    STUDENT --- credit((credit))
-    STUDENT --- dept_no((dept_no))
-    STUDENT --- facul_id((facul_id))
+    DAY((DAY))
+    BREAKFAST((BREAKFAST))
+    LUNCH((LUNCH))
+    DINNER((DINNER))
 
-    FACULTY --- f_id((f_id))
-    FACULTY --- f_name((f_name))
-    FACULTY --- research((research))
+    %% Relationships (Diamonds)
+    HAS_MENU{HAS}
+    HAS_WARDEN{ASSIGNED}
+    HAS_STUDENT{RESIDES}
 
-    DEPT --- d_no((d_no))
-    DEPT --- d_name((d_name))
-    DEPT --- no_students((no_of_students))
-```
+    %% Connections - Hostel Attributes
+    HOSTEL --- HNO
+    HOSTEL --- HNAME
+    HOSTEL --- TYPE
 
----
+    %% Student Attributes
+    STUDENT --- SID
+    STUDENT --- SNAME
+    STUDENT --- GEN
+    STUDENT --- YEAR
 
-## 2️⃣ Customer – Car
+    %% Warden Attributes
+    WARDEN --- WNAME
+    WARDEN --- QUAL
 
-```mermaid
-flowchart LR
-
-    CUSTOMER[CUSTOMER]
-    CAR[CAR]
-
-    OWNS{owns}
-
-    CUSTOMER ---|1| OWNS
-    OWNS ---|N| CAR
-
-    CUSTOMER --- c_id((c_id))
-    CUSTOMER --- c_name((c_name))
-
-    CAR --- car_id((car_id))
-    CAR --- brand((brand))
-    CAR --- cost((type))
-    CAR --- ins_amount((price))
-```
-
----
-
-## 3️⃣ Employee – Company
-
-```mermaid
-flowchart LR
-
-    EMP[EMPLOYEE]
-    COMP[COMPANY]
-
-    WORKS_IN{works in}
-
-    EMP ---|N| WORKS_IN
-    WORKS_IN ---|1| COMP
-
-    EMP --- e_id((e_id))
-    EMP --- e_name((e_name))
-    EMP --- salary((salary))
-
-    COMP --- c_id((c_id))
-    COMP --- c_name((c_name))
-```
-
----
-
-## 📌 Cardinality Meaning
-
-* **1** → One
-* **N** → Many
-
-### Examples:
-
-* `STUDENT ---|N| ADVISED_BY ---|1| FACULTY`
-  → Many students are advised by one faculty
-
-* `CUSTOMER ---|1| OWNS ---|N| CAR`
-  → One customer owns many cars
-
----
-
-## ✅ Notes
-
-* This uses **Mermaid Flowchart** to mimic real ER diagrams
-* Diamonds = Relationships
-* Ovals = Attributes
-* Lines = Proper ER connections (no arrows)
-
----
-
-# ER Diagram - Clean Layout (Course System)
-
-```mermaid
-flowchart TB
-
-    %% Entities
-    FACULTY[Faculty]
-    COURSE[Course]
-    STUDENT[Student]
+    %% Menu Attributes
+    MENU --- DAY
+    MENU --- BREAKFAST
+    MENU --- LUNCH
+    MENU --- DINNER
 
     %% Relationships
-    TEACHES{teaches}
-    ENROLLS{enrolled in}
-
-    %% Connections (no crossing)
-    FACULTY ---|1| TEACHES
-    TEACHES ---|N| COURSE
-
-    STUDENT ---|N| ENROLLS
-    ENROLLS ---|N| COURSE
-
-    %% Faculty attributes
-    FACULTY --- f_id((f_id))
-    FACULTY --- f_name((name))
-    FACULTY --- salary((salary))
-    FACULTY --- dept((dept))
-
-    %% Course attributes
-    COURSE --- c_id((c_id))
-    COURSE --- c_name((name))
-    COURSE --- sem((sem))
-    COURSE --- year((year))
-
-    %% Student attributes
-    STUDENT --- s_id((s_id))
-    STUDENT --- s_name((name))
-    STUDENT --- grade((grade))
-    STUDENT --- gradepoint((gradepoint))
-```
-## 3️⃣ Employee – Company
-
-```mermaid
-flowchart LR
-
-    EMP[EMPLOYEE]
-
-    EMP --- id((e_id))
-    EMP --- name((e_name))
-    EMP --- phno((phno))
-    EMP --- salary((salary))
+    HOSTEL --- HAS_MENU --- MENU
+    HOSTEL --- HAS_WARDEN --- WARDEN
+    HOSTEL --- HAS_STUDENT --- STUDENT
+````
 
 ```
-```mermaid
----
-flowchart TB
-
-    %% Entities
-    CUSTOMER[Customer]
-    ACCOUNT[Account]
-    BRANCH[Branch]
-    TRANSACTION[Transaction]
-
-    %% Relationships
-    OWNS{owns}
-    BELONGS{belongs to}
-    HAS_TXN{has transaction}
-
-    %% Connections
-    CUSTOMER ---|1| OWNS
-    OWNS ---|N| ACCOUNT
-
-    ACCOUNT ---|N| BELONGS
-    BELONGS ---|1| BRANCH
-
-    ACCOUNT ---|1| HAS_TXN
-    HAS_TXN ---|N| TRANSACTION
-
-    %% Attributes
-    CUSTOMER --- c_id((CUSID))
-    CUSTOMER --- c_name((CNAME))
-    CUSTOMER --- location((LOC))
-
-    ACCOUNT --- a_no((ANO))
-    ACCOUNT --- balance((BAL))
-    ACCOUNT --- start((SDATE))
-
-    BRANCH --- b_id((BID))
-    BRANCH --- b_name((FNAME))
-
 ```
-
-```mermaid
-flowchart LR
-
-    %% External Entities
-    Customer((Customer))
-    Driver((Driver))
-    Admin((Admin))
-
-    %% System
-    System[Cab Management System]
-
-    %% Data Stores
-    DB1[(Customer DB)]
-    DB2[(Driver DB)]
-    DB3[(Ride DB)]
-    DB4[(Payment DB)]
-    DB5[(Feedback DB)]
-
-    %% Customer interactions
-    Customer -->|Register / Login| System
-    Customer -->|Request Ride| System
-    System -->|Ride Confirmation| Customer
-    Customer -->|Payment| System
-    Customer -->|Feedback| System
-
-    %% Driver interactions
-    Driver -->|Register| System
-    Driver -->|Accept/Reject Ride| System
-    System -->|Ride Details| Driver
-
-    %% Admin interactions
-    Admin -->|Manage System| System
-    System -->|Reports| Admin
-
-    %% Data storage flows
-    System --> DB1
-    System --> DB2
-    System --> DB3
-    System --> DB4
-    System --> DB5
