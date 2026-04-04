@@ -1,6 +1,3 @@
-````md
-# Hostel Mess Database - ER Diagram (Chen Notation)
-
 ```mermaid
 flowchart TD
 
@@ -59,6 +56,3 @@ flowchart TD
     HOSTEL --- HAS_WARDEN --- WARDEN
     HOSTEL --- HAS_STUDENT --- STUDENT
 ````
-
-```
-```
