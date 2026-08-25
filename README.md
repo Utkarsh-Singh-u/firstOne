@@ -1,58 +1,84 @@
-```mermaid
-flowchart TD
+#include <stdio.h>
+#include <graphics.h>
+#include <stdlib.h>
 
-    %% Entities (Rectangles)
-    HOSTEL[HOSTEL]
-    MENU[MENU]
-    WARDEN[WARDEN]
-    STUDENT[STUDENT]
+void drawLine(int x1, int y1, int x2, int y2)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
 
-    %% Attributes (Ovals)
-    HNO((HNO))
-    HNAME((HNAME))
-    TYPE((TYPE))
+    int sx = (x2 >= x1) ? 1 : -1;
+    int sy = (y2 >= y1) ? 1 : -1;
 
-    SID((SID))
-    SNAME((SNAME))
-    GEN((GEN))
-    YEAR((YEAR))
+    int x = x1;
+    int y = y1;
 
-    WNAME((WNAME))
-    QUAL((QUAL))
+    putpixel(x, y, WHITE);
 
-    DAY((DAY))
-    BREAKFAST((BREAKFAST))
-    LUNCH((LUNCH))
-    DINNER((DINNER))
+    // Case 1: |slope| <= 1
+    if (dx >= dy)
+    {
+        int p = 2 * dy - dx;
 
-    %% Relationships (Diamonds)
-    HAS_MENU{HAS}
-    HAS_WARDEN{ASSIGNED}
-    HAS_STUDENT{RESIDES}
+        for (int i = 0; i < dx; i++)
+        {
+            x += sx;
 
-    %% Connections - Hostel Attributes
-    HOSTEL --- HNO
-    HOSTEL --- HNAME
-    HOSTEL --- TYPE
+            if (p < 0)
+            {
+                p += 2 * dy;
+            }
+            else
+            {
+                y += sy;
+                p += 2 * (dy - dx);
+            }
 
-    %% Student Attributes
-    STUDENT --- SID
-    STUDENT --- SNAME
-    STUDENT --- GEN
-    STUDENT --- YEAR
+            putpixel(x, y, WHITE);
+        }
+    }
 
-    %% Warden Attributes
-    WARDEN --- WNAME
-    WARDEN --- QUAL
+    // Case 2: |slope| > 1
+    else
+    {
+        int p = 2 * dx - dy;
 
-    %% Menu Attributes
-    MENU --- DAY
-    MENU --- BREAKFAST
-    MENU --- LUNCH
-    MENU --- DINNER
+        for (int i = 0; i < dy; i++)
+        {
+            y += sy;
 
-    %% Relationships
-    HOSTEL --- HAS_MENU --- MENU
-    HOSTEL --- HAS_WARDEN --- WARDEN
-    HOSTEL --- HAS_STUDENT --- STUDENT
-````
+            if (p < 0)
+            {
+                p += 2 * dx;
+            }
+            else
+            {
+                x += sx;
+                p += 2 * (dx - dy);
+            }
+
+            putpixel(x, y, WHITE);
+        }
+    }
+}
+
+int main()
+{
+    int gd = DETECT, gm;
+    int x1, y1, x2, y2;
+
+    initgraph(&gd, &gm, "");
+
+    printf("Enter starting point (x1 y1): ");
+    scanf("%d %d", &x1, &y1);
+
+    printf("Enter ending point (x2 y2): ");
+    scanf("%d %d", &x2, &y2);
+
+    drawLine(x1, y1, x2, y2);
+
+    getch();
+    closegraph();
+
+    return 0;
+}
