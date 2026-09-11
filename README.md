@@ -1,120 +1,80 @@
-#include <GL/glut.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-int x1, y1, x2, y2;
-
-void putPixel(int x, int y)
+int main()
 {
-    glBegin(GL_POINTS);
-    glVertex2i(x, y);
-    glEnd();
-}
+    // NAND gate training data
+    float x[4][2] = {
+        {0, 0},
+        {0, 1},
+        {1, 0},
+        {1, 1}
+    };
 
-void bresenham(int x1, int y1, int x2, int y2)
-{
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
+    // NAND target output
+    int target[4] = {1, 1, 1, 0};
 
-    int sx = (x2 >= x1) ? 1 : -1;
-    int sy = (y2 >= y1) ? 1 : -1;
+    // Initial weights
+    float w0 = 0.3;     // Bias weight
+    float w1 = 0.0;
+    float w2 = 0.0;
 
-    int x = x1;
-    int y = y1;
+    float learning_rate = 0.1;
+    float threshold = 0.5;
 
-    putPixel(x, y);
+    int count = 0;
 
-    // |slope| <= 1
-    if (dx >= dy)
+    while (count < 8)
     {
-        int p = 2 * dy - dx;
+        printf("Number of count is %d\n", count);
 
-        for (int i = 0; i < dx; i++)
+        for (int i = 0; i < 4; i++)
         {
-            x += sx;
+            // Weighted sum
+            float sum = w0 + x[i][0] * w1 + x[i][1] * w2;
 
-            if (p < 0)
-            {
-                p += 2 * dy;
-            }
+            // Threshold activation function
+            int output;
+
+            if (sum >= threshold)
+                output = 1;
             else
-            {
-                y += sy;
-                p += 2 * (dy - dx);
-            }
+                output = 0;
 
-            putPixel(x, y);
+            // Error
+            int error = target[i] - output;
+
+            printf("Sum is %.6f\n", sum);
+            printf("Error is %d\n", error);
+
+            // Perceptron learning rule
+            w0 = w0 + learning_rate * error;
+            w1 = w1 + learning_rate * error * x[i][0];
+            w2 = w2 + learning_rate * error * x[i][1];
+
+            printf("Weight 0 = %.6f Weight 1 = %.6f Weight 2 = %.6f\n",
+                   w0, w1, w2);
         }
+
+        count++;
     }
 
-    // |slope| > 1
-    else
+    // Testing
+    printf("\nTesting:\n");
+
+    for (int i = 0; i < 4; i++)
     {
-        int p = 2 * dx - dy;
+        float sum = w0 + x[i][0] * w1 + x[i][1] * w2;
 
-        for (int i = 0; i < dy; i++)
-        {
-            y += sy;
+        int output;
 
-            if (p < 0)
-            {
-                p += 2 * dx;
-            }
-            else
-            {
-                x += sx;
-                p += 2 * (dx - dy);
-            }
+        if (sum >= threshold)
+            output = 1;
+        else
+            output = 0;
 
-            putPixel(x, y);
-        }
+        printf("Sum is %.6f\n", sum);
+        printf("The output for test data %d is: %d\n", i, output);
     }
-}
-
-void display()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glColor3f(1.0, 1.0, 1.0);
-
-    glPointSize(3.0);
-
-    bresenham(x1, y1, x2, y2);
-
-    glFlush();
-}
-
-void init()
-{
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    gluOrtho2D(0, 800, 0, 600);
-}
-
-int main(int argc, char **argv)
-{
-    printf("Enter x1 y1: ");
-    scanf("%d %d", &x1, &y1);
-
-    printf("Enter x2 y2: ");
-    scanf("%d %d", &x2, &y2);
-
-    glutInit(&argc, argv);
-
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(800, 600);
-    glutInitWindowPosition(100, 100);
-
-    glutCreateWindow("Bresenham Line Drawing Algorithm");
-
-    init();
-
-    glutDisplayFunc(display);
-
-    glutMainLoop();
 
     return 0;
 }
